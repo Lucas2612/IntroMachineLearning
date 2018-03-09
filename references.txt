@@ -1,0 +1,4 @@
+http://scikit-learn.org
+https://stackoverflow.com/
+https://stats.stackexchange.com
+http://dataaspirant.com/2017/01/30/how-decision-tree-algorithm-works/
