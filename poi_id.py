@@ -29,7 +29,7 @@ with open("final_project_dataset.pkl", "r") as data_file:
 data_dict.pop("TOTAL", 0)
 data_dict.pop("THE TRAVEL AGENCY IN THE PARK", 0)
 #print len(data_dict)
-
+#quit()
 ### Task 3: Create new feature(s)
 ### Store to my_dataset for easy export below.
 # Counting NANs
@@ -58,7 +58,7 @@ for key, value in data_dict.iteritems():
 
 #print dict_nan
 
-features_list = ['poi','bonus','salary', 'total_stock_value', 'from_to_poi']#, 'total_payments']
+features_list = ['poi', 'bonus',  'from_to_poi', 'salary', 'total_stock_value']# bonus, 'total_stock_value']#, 'total_payments']#, 'from_to_poi']
 
 my_dataset = data_dict
 #data_e.loc[:, ('from_to_poi')] = my_data.loc[:,('from_this_person_to_poi')] + my_data.loc[:,('from_poi_to_this_person')]
@@ -73,7 +73,7 @@ labels, features = targetFeatureSplit(data)
 #print data[1, :]
 #print data[:, :-1]
 #data = data[:, :-1]
-
+#quit()
 ## Scaling data
 from sklearn.preprocessing import MinMaxScaler
 scaler = MinMaxScaler(feature_range=(0, 100))
@@ -121,11 +121,17 @@ clf = GridSearchCV(clf, parameters)
 clf.fit(features_train_pca, labels_train)
 print clf.best_params_
 
-#{'min_samples_split': 9, 'splitter': 'random', 'min_samples_leaf': 2}
+presort = clf.best_params_['presort']
+splitter = clf.best_params_['splitter']
+min_samples_leaf = clf.best_params_['min_samples_leaf']
+criterion = clf.best_params_['criterion']
+min_samples_split = clf.best_params_['min_samples_split']
+max_depth = clf.best_params_['max_depth']
 
-#clf = tree.DecisionTreeClassifier(presort=True, splitter = 'random', min_samples_leaf = 1, criterion= 'gini', min_samples_split = 2, max_depth=3 )
-clf = tree.DecisionTreeClassifier(presort=True, splitter = 'best', min_samples_leaf = 2, criterion= 'gini', min_samples_split = 2, max_depth=8 )
-#clf = tree.DecisionTreeClassifier(presort=True, splitter = 'random', min_samples_leaf = 2, criterion= 'gini', min_samples_split = 10, max_depth=5)
+
+clf = tree.DecisionTreeClassifier(presort=presort, splitter = splitter, min_samples_leaf = min_samples_leaf, criterion= criterion, 
+min_samples_split = min_samples_split, max_depth=max_depth )
+#clf = tree.DecisionTreeClassifier(presort=True, splitter = 'best', min_samples_leaf = 2, criterion= 'gini', min_samples_split = 2, max_depth=8 )
 clf.fit(features_train_pca, labels_train)
 accuracy = clf.score(features_test_pca, labels_test)
 print "score: " + str(accuracy)
